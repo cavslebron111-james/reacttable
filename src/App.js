@@ -1,50 +1,71 @@
 import React, { Component } from 'react';
-import {Switch,Route} from "react-router-dom";
+import logo from './logo.svg';
 import './App.css';
-import "bootstrap/dist/css/bootstrap.min.css";
-import Navbar from './components/Navbar';
-import Productlist from './components/Productlist';
-import Details from './components/Details';
-import Cart from './components/Cart';
-import Default from './components/Default';
-import Modal from './components/Modal';
+import ReactTable from 'react-table-6';
+//import "react-table/react-table.css";  
 
 
-
-
-
-class App extends Component {
-  render() {
-    return (
   
-  <React.Fragment>
-     <Navbar></Navbar>
-     <Switch>
+  
+class App extends Component {
+  
+  constructor(props){
+    super(props)
 
-      <Route exact path="/" component={Productlist}/>
-      <Route path="/Details" component={Details}/>
+    this.state = {
+      posts: []
+    }
+  }
+
+  
+
+
+  
+   // const url = 'https://jsonplaceholder.typicode.com/posts';
+    componentDidMount() {
+       fetch('https://jsonplaceholder.typicode.com/posts')
+      .then(result => result.json())
+      .then(posts => this.setState({posts: posts}))
+       }
       
-      <Route path="/cart" component={Cart}/>
-      
-      <Route component={Default}/>
-     
-
-
-     </Switch>
-     < Modal />
-     
- 
- 
-
- 
-
-
-
-
-
-  </React.Fragment>
     
-
+  
+      render() {
+        const columns = [
+          {
+            Header: 'UserId',
+            accessor: 'userId'
+            
+          },
+          {
+           Header: 'Id',
+           accessor: 'id'
+           
+         },
+         {
+           Header: 'Title',
+           accessor: 'title'
+         },
+         {
+           Header: 'Content',
+           accessor: 'body'
+         }
+        
+        ];
+        
+    return (
+      <div
+        className="container"
+        style={{
+        height: '800px',
+        width: '1800px' }}
+      >
+        <ReactTable
+         
+          data={this.state.posts}
+          columns={columns}>
+        </ReactTable>
+      </div>
     );
   }
 }
